@@ -163,14 +163,19 @@ export async function execute(
 
   const response: RunOutput = new Map()
 
-  if (!key || key === '' || !secret || secret === '') {
-    throw Error('Invalid credentials')
-  }
-
   const ctx = await new Context(target)
   if (session && session !== '') {
+    if (debug) {
+      console.log('Using session')
+    }
     ctx.withSession(session)
   } else {
+    if (debug) {
+      console.log('Using credentials')
+    }
+    if (!key || key === '' || !secret || secret === '') {
+      throw Error('Invalid credentials')
+    }
     const keyInfo = {
       key,
       secret,
